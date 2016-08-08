@@ -6,7 +6,7 @@ package za.co.data
 class OrderBook extends SQLObject {
     int itemRow
     def processed
-    def ask
+    def asks
     def bids
     def isFrozen
     def seq

@@ -1,4 +1,5 @@
 import za.co.bots.InfoGatherBot
+import za.co.bots.BotInterface
 import za.co.poloniex.RestClient
 import java.util.logging.Logger
 
@@ -14,7 +15,7 @@ class Trader {
     static int timeBetweenRuns = 60000
     static Logger log = Logger.getLogger(this.getClass().canonicalName)
 
-    def bots = [new InfoGatherBot(client, 'BTC_ETH'), new InfoGatherBot(client, 'BTC_ETC')];
+    List<BotInterface> bots = [new InfoGatherBot(client, 'BTC_ETH'), new InfoGatherBot(client, 'BTC_ETC')];
 
     static def main(def args) {
         def me = new Trader();
@@ -34,7 +35,10 @@ class Trader {
     def runBots(){
         def tickerData = client.getTicker()
         bots.each { bot ->
-            bot.process(tickerData)
+            if(bot instanceof InfoGatherBot) {
+                bot.setTickerData(tickerData)
+            }
+            bot.process()
         }
     }
 }

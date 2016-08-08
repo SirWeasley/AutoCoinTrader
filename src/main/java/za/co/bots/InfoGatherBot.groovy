@@ -10,30 +10,31 @@ import java.util.logging.Logger
 /**
  * Created by Alvin on 30 Jul 2016.
  */
-class InfoGatherBot {
+class InfoGatherBot implements BotInterface {
 
     static Logger log = Logger.getLogger(this.getClass().canonicalName)
     RestClient client
     String currency
+    def tickerData
 
     public InfoGatherBot(RestClient client, String currency){
         this.client = client;
         this.currency = currency
     }
 
-    def process(def tickerData){
-        ticker(tickerData)
-        returnOrderBook()
+    def process(){
+        ticker()
+        orderBook()
     }
 
-    private def ticker(def tickerData){
+    private def ticker(){
         Ticker ticker = tickerData."$currency"
         ticker.currency = currency
         DBManager.instance.doInsert(ticker)
     }
 
-    private def returnOrderBook(){
-        OrderBook orderBook = client.getOrderBook(currency)
+    private def orderBook(){
+        OrderBook orderBook = client.getOrderBook(currency, 10000)
         println orderBook
     }
 }

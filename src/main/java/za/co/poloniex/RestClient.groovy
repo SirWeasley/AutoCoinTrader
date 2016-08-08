@@ -44,7 +44,7 @@ class RestClient {
         return publicCommand([command:'returnTicker'])
     }
 
-    def getOrderBook(def currency){
-        return publicCommand([command:'returnOrderBook',currencyPair:currency,depth:1000])
+    def getOrderBook(def currency, def depth = 1000){
+        return publicCommand([command:'returnOrderBook',currencyPair:currency,depth:depth])
     }
 }
