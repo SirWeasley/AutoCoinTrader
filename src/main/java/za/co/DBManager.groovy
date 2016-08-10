@@ -17,6 +17,26 @@ class DBManager {
         return Sql.newInstance("jdbc:mysql://localhost:3306/trader", "admin", "root", "com.mysql.jdbc.Driver")
     }
 
+    def doReadData(SQLObject item, String conditions, List params){
+        log.fine("doReadData Start for :"+item)
+        def sql = getConnection()
+        try{
+            def readSql =  """SELECT * FROM ${item.tableName()} """
+            if(conditions.toUpperCase().contains("WHERE")){
+                readSql+=conditions
+                return sql.rows(readSql, params)
+            }else {
+                return sql.rows(readSql)
+            }
+        }catch (Exception e){
+            log.severe("DB read problems -- "+e.getMessage())
+            log.severe(e.getStackTrace())
+        }finally {
+            sql.close()
+            log.fine("doReadData DONE for :"+item)
+        }
+    }
+
     def doInsert(SQLObject item){
         log.fine("doInsert Start for :"+item)
         def sql = getConnection()
@@ -47,9 +67,13 @@ class DBManager {
         def columns = "itemRow MEDIUMINT NOT NULL AUTO_INCREMENT, processed TIMESTAMP NOT NULL"
         def createEnd = ", primary key (itemRow))"
         def inValidProps = ['class','update','tableName','insert', 'itemRow', 'processed']
+        def blobType = ['asks','bids']
         p.properties.collect{it}.each {prop ->
-            if(!inValidProps.contains(prop.key)){
-                columns+=", "+prop.key+" varchar(100) NOT NULL"
+            if(!inValidProps.contains(prop.key)&&!blobType.contains(prop.key)){
+                columns+=", "+prop.key+" varchar(255) NOT NULL"
+            }
+            if(blobType.contains(prop.key)){
+                columns+=", "+prop.key+" LONGTEXT NOT NULL"
             }
         }
         sql.execute createStart+columns+createEnd

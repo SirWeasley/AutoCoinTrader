@@ -3,8 +3,12 @@ package za.co.bots
 /**
  * Created by Alvin on 08 Aug 2016.
  */
-interface BotInterface {
+abstract class BotInterface {
 
-    def process()
+    BotInterface(String currency){
+        this.currency = currency;
+    }
+    String currency
+    abstract def process()
 
 }

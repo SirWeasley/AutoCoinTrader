@@ -28,10 +28,6 @@ class Ticker extends SQLObject {
                 [id, baseVolume, high24hr, highestBid, last, low24hr, lowestAsk, percentChange, quoteVolume, isFrozen, currency]]
     }
 
-    def allRows() {
-        return "select * from Ticker where currency = ?"
-    }
-
     def updateSQL() {
         return """update Ticker set processedTime=?, baseVolume=?, high24hr=?, highestBid=?, last=?, low24hr=?, lowestAsk=?, percentChange=?,
                          quoteVolume=? where row=?"""

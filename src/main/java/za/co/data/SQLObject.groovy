@@ -6,7 +6,6 @@ package za.co.data
 abstract class SQLObject implements Serializable {
 
     abstract def insertSQL()
-    abstract def allRows()
     abstract def updateSQL()
     abstract String tableName()
 
