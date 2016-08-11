@@ -1,7 +1,9 @@
-import za.co.bots.InfoGatherBot
 import za.co.bots.BotInterface
+import za.co.bots.InfoGatherBot
 import za.co.bots.OrderBookAnalysisBot
+import za.co.constants
 import za.co.poloniex.RestClient
+
 import java.util.logging.Logger
 
 /**
@@ -10,13 +12,13 @@ import java.util.logging.Logger
 
 //API Key	BZ719HPC-90UYH16H-5NA7GI8D-669HTVKV	Delete
 //Secret	0b9384d0fd315e3b7a15b3583986134b59b2078ebfb86d9ff591f6b9c2c5d3cfa39eaab4da5bbeb76c3a9e8119db210b4d7e96674d2cfa61d1f05d868a87ac30
-class Trader {
+class Trader implements constants {
 
-    static def client = RestClient.instance
-    static int timeBetweenRuns = 60000
     static Logger log = Logger.getLogger(this.getClass().canonicalName)
+    static def client = RestClient.instance
 
-    List<BotInterface> bots = [new InfoGatherBot(client, 'BTC_ETH'), new InfoGatherBot(client, 'BTC_ETC'),new OrderBookAnalysisBot('BTC_ETC')];
+    List<BotInterface> bots = [new InfoGatherBot(client, eth), new InfoGatherBot(client, etc),
+                               new OrderBookAnalysisBot(eth),new OrderBookAnalysisBot(etc)];
 
     static def main(def args) {
         def me = new Trader();
@@ -24,12 +26,12 @@ class Trader {
         def runStart
         def runEnd
         while (running) {
-            def sleepTime = timeBetweenRuns
+            def sleepTime = me.timeBetweenRuns
             try{
                 runStart = new Date().toTimestamp()
                 me.runBots()
                 runEnd = new Date().toTimestamp()
-                sleepTime = timeBetweenRuns-(runEnd.time-runStart.time)
+                sleepTime = me.timeBetweenRuns-(runEnd.time-runStart.time)
             }catch(Exception e){
                 log.severe("THERE WAS A EXCEPTION message-----> "+e.getMessage())
                 log.severe("THERE WAS A EXCEPTION stacktrace-----> "+e.getStackTrace())

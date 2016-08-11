@@ -4,8 +4,9 @@ import groovyx.net.http.HTTPBuilder
 
 import java.util.logging.Logger
 
-import static groovyx.net.http.Method.GET
 import static groovyx.net.http.ContentType.TEXT
+import static groovyx.net.http.Method.GET
+
 /**
  * Created by Alvin on 21 Jul 2016.
  */
@@ -30,7 +31,7 @@ class RestClient {
                     result = slurper.parseText(line)
                 }
                 if(result.error){
-                    log.severe("Error repsonse -->"+result.error)
+                    log.severe("Error response -->"+result.error)
                     throw Exception("RestClient:"+result.error)
                 }
             }

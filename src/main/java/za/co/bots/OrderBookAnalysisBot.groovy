@@ -2,7 +2,6 @@ package za.co.bots
 
 import za.co.DBManager
 import za.co.data.OrderBook
-import groovy.json.JsonSlurper
 
 /**
  * Created by Alvin on 08 Aug 2016.
@@ -14,34 +13,47 @@ class OrderBookAnalysisBot extends BotInterface {
     }
 
     def slurper = new groovy.json.JsonSlurper()
-    def threasHolds = [1,5,10,20]
 
     def process(){
-        String conditions = " where currency = ? order by processed desc limit 10"
+        String conditions = " where currency = ? order by processed desc limit ${depthCheck}"
         def params = [currency]
         def results =  DBManager.instance.doReadData(new OrderBook(), conditions, params)
 
+        def askResults = []
+        def bidResults = []
+
         results.each {
             OrderBook book = it
-            def asks = book.asks
-            def askResults = []
-            threasHolds.each { th ->
-               askResults += howManyOver(asks, th)
+
+            thresholds.each { th ->
+                def overCalc = howManyOver(book.asks, th)
+                askResults += [overCalc]
+
+                overCalc = howManyOver(book.bids, th)
+                bidResults += [overCalc]
             }
+
         }
+        compareResults(askResults, bidResults);
     }
 
-    def howManyOver(def orders, def threashold){
+    def compareResults(ArrayList askResults, ArrayList bidResults) {
+        println "askResults"+askResults
+        println "bidResults"+bidResults
+
+
+    }
+
+    def howManyOver(def orders, def threshold){
         def results = []
         def i = 0;
-        orders.each { o ->
-            def order = slurper.parseText(o)
-            if(order[1]>threashold){
-                results += [it,i]
+        orders = slurper.parseText(orders)
+        orders[0].each { order ->
+            if(order[1]>threshold){
+                i++
             }
-            i++
         }
-        println results
+        results += [threshold, i]
         return results
     }
 }
