@@ -15,9 +15,8 @@ class OrderBook extends SQLObject {
     def currency
 
     def insertSQL() {
-        //asks("\\xAC\\xED\\x00\\x05sr...","")
         return ["""insert into OrderBook (processed,asks,bids,isFrozen,seq,currency) values (now(),?,?,?,?,?) """,
-                [asks,bids,isFrozen,seq, currency]]
+                [ Arrays.deepToString(asks), Arrays.deepToString(bids),isFrozen,seq, currency]]
     }
 
     def updateSQL() {

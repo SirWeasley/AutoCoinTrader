@@ -24,10 +24,17 @@ class Trader {
         def runStart
         def runEnd
         while (running) {
-            runStart = new Date().toTimestamp()
-            me.runBots()
-            runEnd = new Date().toTimestamp()
-            def sleepTime = timeBetweenRuns-(runEnd.time-runStart.time)
+            def sleepTime = timeBetweenRuns
+            try{
+                runStart = new Date().toTimestamp()
+                me.runBots()
+                runEnd = new Date().toTimestamp()
+                sleepTime = timeBetweenRuns-(runEnd.time-runStart.time)
+            }catch(Exception e){
+                log.severe("THERE WAS A EXCEPTION message-----> "+e.getMessage())
+                log.severe("THERE WAS A EXCEPTION stacktrace-----> "+e.getStackTrace())
+
+            }
             log.info("Done with tick, time till next tick--> "+sleepTime+" ms")
             sleep(sleepTime)
         }

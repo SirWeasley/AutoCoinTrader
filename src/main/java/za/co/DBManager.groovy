@@ -66,7 +66,7 @@ class DBManager {
         def createStart = "create table "+p.tableName()+" ("
         def columns = "itemRow MEDIUMINT NOT NULL AUTO_INCREMENT, processed TIMESTAMP NOT NULL"
         def createEnd = ", primary key (itemRow))"
-        def inValidProps = ['class','update','tableName','insert', 'itemRow', 'processed']
+        def inValidProps = ['class','update','tableName','insert', 'itemRow', 'processed', 'metaClass']
         def blobType = ['asks','bids']
         p.properties.collect{it}.each {prop ->
             if(!inValidProps.contains(prop.key)&&!blobType.contains(prop.key)){
