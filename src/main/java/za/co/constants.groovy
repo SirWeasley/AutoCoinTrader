@@ -9,6 +9,7 @@ interface constants {
     static int timeBetweenRuns = 60000
 
     static String depthCheck = 10
+    static String depth = 1000
     //bitcoin level to check for in order book
     static def thresholds = [1, 5, 10, 20]
 }

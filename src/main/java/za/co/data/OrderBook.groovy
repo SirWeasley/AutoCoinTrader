@@ -1,7 +1,4 @@
 package za.co.data
-
-import groovy.json.JsonBuilder
-
 /**
  * Created by Alvin on 31 Jul 2016.
  */

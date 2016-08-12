@@ -1,7 +1,4 @@
 package za.co.data
-
-import java.sql.Date
-
 /**
  * Created by Alvin on 30 Jul 2016.
  */

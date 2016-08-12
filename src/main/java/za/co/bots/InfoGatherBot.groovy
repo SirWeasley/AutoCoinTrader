@@ -33,7 +33,7 @@ class InfoGatherBot extends BotInterface {
     }
 
     private def orderBook(){
-        OrderBook orderBook = client.getOrderBook(currency, 1000)
+        OrderBook orderBook = client.getOrderBook(currency, depth)
         orderBook.currency = currency
         DBManager.instance.doInsert(orderBook)
     }
