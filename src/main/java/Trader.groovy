@@ -27,16 +27,16 @@ class Trader implements constants {
         def runEnd
         while (running) {
             def sleepTime = me.timeBetweenRuns
-            try{
                 runStart = new Date().toTimestamp()
+            try{
                 me.runBots()
-                runEnd = new Date().toTimestamp()
-                sleepTime = me.timeBetweenRuns-(runEnd.time-runStart.time)
             }catch(Exception e){
                 log.severe("THERE WAS A EXCEPTION message-----> "+e.getMessage())
                 log.severe("THERE WAS A EXCEPTION stacktrace-----> "+e.getStackTrace())
 
             }
+            runEnd = new Date().toTimestamp()
+            sleepTime = me.timeBetweenRuns-(runEnd.time-runStart.time)
             log.info("Done with tick, time till next tick--> "+sleepTime+" ms")
             sleep(sleepTime)
         }

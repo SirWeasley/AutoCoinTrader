@@ -2,6 +2,8 @@ package za.co.bots
 
 import za.co.DBManager
 import za.co.data.OrderBook
+import za.co.data.OrderBookAnalysis
+import za.co.data.Ticker
 
 /**
  * Created by Alvin on 08 Aug 2016.
@@ -41,15 +43,23 @@ class OrderBookAnalysisBot extends BotInterface {
     }
 
     def compareResults(ArrayList askResults, ArrayList bidResults) {
-//        println "askResults"+askResults
-//        println "bidResults"+bidResults
+        OrderBookAnalysis analysis = new OrderBookAnalysis()
+        analysis.askTotal = askResults[0]
+        analysis.bidTotal = bidResults[0]
+        analysis.askDirection = direction(askResults)
+        analysis.bidDirection = direction(bidResults)
+        analysis.currency = currency
 
-        println "ask total ${currency}-->"+ askResults[0]
-        println "bid total ${currency}-->"+ bidResults[0]
-        println "ask direction ${currency}-->"+ direction(askResults)
-        println "bid direction ${currency}-->"+ direction(bidResults)
-
-
+        //if bids(buys) are bigger then - returned
+        //if ask(sells) are bigger positives
+        //this is on sums on thresholds bigger than set of Bitcoin values
+        def compareResult = 0
+        thresholds.each { th ->
+            def row = analysis.askDirection[th].compareTo(analysis.bidDirection[th])
+            compareResult += (row*th)
+        }
+        analysis.compareDirection = compareResult
+        DBManager.instance.doInsert(analysis)
     }
 
     def direction(def results){

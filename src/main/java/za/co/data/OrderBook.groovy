@@ -9,10 +9,9 @@ class OrderBook extends SQLObject {
     def bids
     def isFrozen
     def seq
-    def currency
 
     def insertSQL() {
-        return ["""insert into OrderBook (processed,asks,bids,isFrozen,seq,currency) values (now(),?,?,?,?,?) """,
+        return ["""insert into ${tableName()} (processed,asks,bids,isFrozen,seq,currency) values (now(),?,?,?,?,?) """,
                 [ Arrays.deepToString(asks), Arrays.deepToString(bids),isFrozen,seq, currency]]
     }
 

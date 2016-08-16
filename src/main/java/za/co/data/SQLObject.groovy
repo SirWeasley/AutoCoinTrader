@@ -8,6 +8,7 @@ abstract class SQLObject implements Serializable {
     abstract def insertSQL()
     abstract def updateSQL()
     abstract String tableName()
+    def currency;
 
     @Override
     public String toString(){

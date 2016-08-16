@@ -17,10 +17,9 @@ class Ticker extends SQLObject {
     def percentChange
     def quoteVolume
     def isFrozen
-    def currency
 
     def insertSQL() {
-        return ["""insert into Ticker (processed, id, baseVolume, high24hr, highestBid, last, low24hr, lowestAsk, percentChange, quoteVolume, isFrozen, currency)
+        return ["""insert into ${tableName()} (processed, id, baseVolume, high24hr, highestBid, last, low24hr, lowestAsk, percentChange, quoteVolume, isFrozen, currency)
                   values (now(),?,?,?,?,?,?,?,?,?,?,?)""",
                 [id, baseVolume, high24hr, highestBid, last, low24hr, lowestAsk, percentChange, quoteVolume, isFrozen, currency]]
     }

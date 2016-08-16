@@ -4,9 +4,9 @@
 class testMe {
 
     static def main(def args) {
-        def start = 0.3
+        def start = 1
         (1..365).each{
-            start = start + (start*0.02/100)
+            start = start + (start*0.0002)
             println start
         }
     }
